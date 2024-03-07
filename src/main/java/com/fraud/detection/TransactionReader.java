@@ -22,15 +22,22 @@ public class TransactionReader {
             if (jsonString.startsWith("[") && jsonString.endsWith("]")) {
                 jsonString = jsonString.substring(1, jsonString.length() - 1);
             }
-
-            // Split JSON string by "}," to extract individual transactions
+            
+            /**
+             * Split JSON string by "}," to extract individual transactions
+             */
             String[] transactionStrings = jsonString.split("\\},\\s*");
             for (String transactionString : transactionStrings) {
-                // Add back "}" if it's not the last transaction string
+                /**
+                 * Add back "}" if it's not the last transaction string
+                 */
                 if (!transactionString.endsWith("}")) {
                     transactionString += "}";
                 }
-                // Parse each transaction string
+                
+                /**
+                 *  Parse each transaction string
+                 */
                 Transaction transaction = parseTransaction(transactionString);
                 if (transaction != null) {
                     transactions.add(transaction);
@@ -45,14 +52,19 @@ public class TransactionReader {
 
     private static Transaction parseTransaction(String transactionString) {
         try {
-            // Extract fields from transactionString using regular expressions
+            
+            /**
+             *  Extract fields from transactionString using regular expressions
+             */
             long timestamp = extractLongValue(transactionString, "timestamp");
             double amount = extractDoubleValue(transactionString, "amount");
             String userID = extractStringValue(transactionString, "userID");
             String serviceID = extractStringValue(transactionString, "serviceID");
             return new Transaction(timestamp, amount, userID, serviceID);
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            // Handle parsing errors
+            /**
+             *  Handle parsing errors
+             */
             e.printStackTrace();
             return null;
         }
